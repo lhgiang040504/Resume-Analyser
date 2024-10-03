@@ -1,4 +1,3 @@
-
 import requests
 from bs4 import BeautifulSoup # commonly used for parsing HTML content
 import pandas as pd
@@ -25,10 +24,7 @@ def get_resume(url_web='https://www.jobspider.com/job/resume-search-results.asp/
     return href_list
 
 # Convert resume into text
-def resume_to_text(url):
-	# Create file to store data
-    file_name = url[30:-5] + '.txt'
-	
+def resume_to_text(url):	
     response = requests.get(url)
     soup = BeautifulSoup(response.text,'lxml')
 
@@ -37,4 +33,4 @@ def resume_to_text(url):
 
     # Get job decription
     decriptions = soup.find_all(["td"])
-    return file_name, resume_type, [decription.text.strip() for decription in decriptions]
+    return url, resume_type, [decription.text.strip() for decription in decriptions]
