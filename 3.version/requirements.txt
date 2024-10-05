@@ -1,2 +1,5 @@
 !pip install selenium 
 !pip install webdriver-manager
+
+!pip install spacy_transformers
+!python -m spacy download en_core_web_lg
