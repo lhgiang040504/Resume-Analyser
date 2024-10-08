@@ -1,5 +1,10 @@
 !pip install selenium 
 !pip install webdriver-manager
 
+!pip install -U spacy
 !pip install spacy_transformers
 !python -m spacy download en_core_web_lg
+
+!pip install -U setuptools wheel
+
+!pip install -U lxml
