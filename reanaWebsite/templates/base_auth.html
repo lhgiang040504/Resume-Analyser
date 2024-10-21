@@ -1,0 +1,41 @@
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc." />
+    
+    <!-- Light/dark mode -->
+    <script src="{% static 'js/dropdown_mode.js' %}"></script>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/favicon/favicon.ico" type="image/x-icon" />
+    
+    <!-- Fonts and icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" />
+    
+    <!-- Libs CSS -->
+    <link rel="stylesheet" src="{% static 'css/libs.bundle.css' %}" />
+    
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="{% static 'css/theme.bundle.css' %}" />
+    
+    <!-- Title -->
+    <title>REANA</title>
+  </head>
+
+  <body class="d-flex align-items-center">
+    {% block content %}{% endblock %}
+    
+    <!-- JAVASCRIPT -->
+    <!-- Map JS -->
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
+    <!-- Vendor JS -->
+    <script src="{% static 'js/vendor.bundle.js' %}"></script>
+    <!-- Theme JS -->
+    <script src="{% static 'js/theme.bundle.js' %}"></script>
+  </body>
+</html>

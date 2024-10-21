@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="{% static 'css/theme.bundle.css' %}" />
     
     <!-- Title -->
-    <title>Dashboard</title>
+    <title>REANA</title>
   </head>
 
   <body>
@@ -168,7 +168,7 @@
             <nav class="navbar-nav nav-pills mb-7">
               <div class="nav-item">
                 <a
-                  class="nav-link active"
+                  class="nav-link"
                   href="#"
                   data-bs-toggle="collapse"
                   data-bs-target="#dashboards"
@@ -180,49 +180,8 @@
                 </a>
                 <div class="collapse show" id="dashboards">
                   <nav class="nav nav-pills">
-                    <a class="nav-link active" href="#">Default</a>
-                    <a class="nav-link " href="#">Crypto</a>
-                    <a class="nav-link " href="#">SaaS</a>
-                  </nav>
-                </div>
-              </div>
-              <div class="nav-item">
-                <a
-                  class="nav-link "
-                  href="#"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#customers"
-                  rol="button"
-                  aria-expanded="false"
-                  aria-controls="customers"
-                >
-                  <span class="material-symbols-outlined me-3">group</span> Customers
-                </a>
-                <div class="collapse " id="customers">
-                  <nav class="nav nav-pills">
-                    <a class="nav-link " href="#">Customers</a>
-                    <a class="nav-link " href="#">Customer details</a>
-                    <a class="nav-link " href="#">New customer</a>
-                  </nav>
-                </div>
-              </div>
-              <div class="nav-item">
-                <a
-                  class="nav-link "
-                  href="#"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#projects"
-                  rol="button"
-                  aria-expanded="false"
-                  aria-controls="projects"
-                >
-                  <span class="material-symbols-outlined me-3">list_alt</span> Projects
-                </a>
-                <div class="collapse " id="projects">
-                  <nav class="nav nav-pills">
-                    <a class="nav-link " href="#">Projects</a>
-                    <a class="nav-link " href="#">Project overview</a>
-                    <a class="nav-link " href="#">New project</a>
+                    <a class="nav-link" href="#">Market</a>
+                    <a class="nav-link " href="#">NEWS</a>
                   </nav>
                 </div>
               </div>
@@ -236,52 +195,50 @@
                   aria-expanded="false"
                   aria-controls="account"
                 >
-                  <span class="material-symbols-outlined me-3">person</span> Account
+                  <span class="material-symbols-outlined me-3">person</span> Single reSUMEanaLYSIS
                 </a>
                 <div class="collapse " id="account">
                   <nav class="nav nav-pills">
+                    <a class="nav-link " href="#">My resume</a>
+                    <a class="nav-link " href="#">My analysis</a>
+                  </nav>
+                </div>
+              </div>
+              <div class="nav-item">
+                <a
+                  class="nav-link "
+                  href="#"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#customers"
+                  rol="button"
+                  aria-expanded="false"
+                  aria-controls="customers"
+                >
+                  <span class="material-symbols-outlined me-3">group</span> Multiple reSUMEanaLYSIS
+                </a>
+                <div class="collapse " id="customers">
+                  <nav class="nav nav-pills">
+                    <a class="nav-link " href="#">My resumes</a>
+                    <a class="nav-link " href="#">My analysis</a>
+                  </nav>
+                </div>
+              </div>
+              <div class="nav-item">
+                <a
+                  class="nav-link "
+                  href="#"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#projects"
+                  rol="button"
+                  aria-expanded="false"
+                  aria-controls="projects"
+                >
+                  <span class="material-symbols-outlined me-3">list_alt</span> Account
+                </a>
+                <div class="collapse " id="projects">
+                  <nav class="nav nav-pills">
                     <a class="nav-link " href="#">Account overview</a>
-                    <a class="nav-link " href="#">Account settings</a>
-                  </nav>
-                </div>
-              </div>
-              <div class="nav-item">
-                <a
-                  class="nav-link "
-                  href="#"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#orders"
-                  rol="button"
-                  aria-expanded="false"
-                  aria-controls="orders"
-                >
-                  <span class="material-symbols-outlined me-3">shopping_cart</span> Orders
-                </a>
-                <div class="collapse " id="orders">
-                  <nav class="nav nav-pills">
-                    <a class="nav-link " href="#">Orders</a>
-                    <a class="nav-link " href="#">Invoice</a>
-                    <a class="nav-link " href="#">Pricing</a>
-                  </nav>
-                </div>
-              </div>
-              <div class="nav-item">
-                <a
-                  class="nav-link "
-                  href="#"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#posts"
-                  rol="button"
-                  aria-expanded="false"
-                  aria-controls="posts"
-                >
-                  <span class="material-symbols-outlined me-3">text_fields</span> Posts
-                </a>
-                <div class="collapse " id="posts">
-                  <nav class="nav nav-pills">
-                    <a class="nav-link " href="#">Categories</a>
-                    <a class="nav-link " href="#">Posts</a>
-                    <a class="nav-link " href="#">New post</a>
+                    <a class="nav-link " href="#">Account setting</a>
                   </nav>
                 </div>
               </div>
@@ -299,8 +256,8 @@
                 </a>
                 <div class="collapse" id="authentication">
                   <nav class="nav nav-pills">
-                    <a class="nav-link" href="#">Sign in</a>
-                    <a class="nav-link" href="#">Sign up</a>
+                    <a class="nav-link" href="#">Login</a>
+                    <a class="nav-link" href="{% url  'register' %}">Register</a>
                     <a class="nav-link" href="#">Password reset</a>
                     <a class="nav-link" href="#">Error</a>
                   </nav>
@@ -357,12 +314,7 @@
                 </div>
               </div>
               <div class="nav-item">
-                <a class="nav-link" href="https://themes.getbootstrap.com/product/dashbrd/" target="_blank">
-                  <span class="material-symbols-outlined me-3">local_mall</span> Go to product page
-                </a>
-              </div>
-              <div class="nav-item">
-                <a class="nav-link" href="mailto:yevgenysim+simpleqode@gmail.com">
+                <a class="nav-link" href="#">
                   <span class="material-symbols-outlined me-3">alternate_email</span> Contact us
                 </a>
               </div>
@@ -382,6 +334,8 @@
         </div>
       </nav>
     </aside>
+
+    {% block content %}{% endblock %}
     
     <!-- JAVASCRIPT -->
     <!-- Map JS -->
