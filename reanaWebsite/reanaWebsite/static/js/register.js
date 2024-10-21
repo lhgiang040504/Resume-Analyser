@@ -64,6 +64,41 @@ emailField.addEventListener("keyup", (e) => {
         });
     } else {
         emailField.classList.remove("is-invalid");
+        emailField.classList.remove("is-valid");
         emailfeedBackArea.style.display = "none";
+    }
+  });
+
+// PASSWORD
+const passwordField = document.querySelector("#passwordField"); // id
+const passwordFeedBackArea = document.querySelector(".passwordFeedBackArea"); // class
+passwordField.addEventListener("keyup", (e) => {
+    const passwordVal = e.target.value;
+  
+    // clear Previous Validation
+    passwordField.classList.remove("is-invalid");
+    passwordFeedBackArea.style.display = "none";
+  
+    if (passwordVal.length > 0) {
+        fetch("/authentication/password_validation", {
+            body: JSON.stringify({ password: passwordVal }),
+            method: "POST",
+        })
+        .then(res => res.json())
+        .then((data) => {     
+          if (data.password_error) {
+            passwordField.classList.add("is-invalid");
+            passwordFeedBackArea.style.display = "block";
+            passwordFeedBackArea.innerHTML = `<p>${data.password_error}</p>`;
+            submitBtn.disabled = true;
+          } else {
+            passwordField.classList.add("is-valid");
+            submitBtn.removeAttribute("disabled");
+          }
+        });
+    } else {
+      passwordField.classList.remove("is-invalid");
+      passwordField.classList.remove("is-valid");
+      passwordFeedBackArea.style.display = "none";
     }
   });

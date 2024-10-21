@@ -2,9 +2,37 @@
 {% load static %}
 
 {% block content %}
-<form method="POST" enctype="multipart/form-data" >
-    {% csrf_token %}
-    <input type="file" name="my_file">
-    <button type="submit">Upload</button>
-</form>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12" style="max-width: 30rem">
+            <!-- Heading -->
+            <h1 class="fs-1 text-center">Login</h1>
+
+            <!-- Subheading -->
+            <p class="lead text-center text-body-secondary">Access our dashboard and start tracking your tasks.</p>
+
+            <!-- Form -->
+            <form class="mb-5" action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                {% include '_messages.html' %}
+                <div class="mb-4">
+                    <label class="visually-hidden" for="username">Username</label>
+                    <input class="form-control" name="username" id="usernameField" type="text" placeholder="{{ username }}"/>
+                </div>
+
+                <div class="mb-4">
+                    <label class="visually-hidden" for="password">Password</label>
+                    <input class="form-control" name="password" id="passwordField" type="password" placeholder="{{ password }}" />
+                </div>
+
+                <button class="btn btn-secondary w-100 submit-btn" type="submit">Login</button>
+            </form>
+
+            <!-- Text -->
+            <p class="text-center text-body-secondary mb-0">Don't have an account yet?<a href="./register">Register</a></p>
+        </div>
+    </div>
+</div>
+
+
 {% endblock %}

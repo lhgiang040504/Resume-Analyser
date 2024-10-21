@@ -9,10 +9,11 @@
             <h1 class="fs-1 text-center">Register</h1>
 
             <!-- Subheading -->
-            <p class="lead text-center text-body-secondary">Access our dashboard and start tracking your tasks.</p>
+            <p class="lead text-center text-body-secondary">Join our platform and take control of your workflow.</p>
 
             <!-- Form -->
-            <form class="mb-5" action="" method="post">
+            <form class="mb-5" action="{% url 'register' %}" method="post">
+                {% csrf_token %}
                 <div class="mb-4">
                     <label class="visually-hidden" for="username">Username</label>
                     <input class="form-control" name="username" id="usernameField" type="text" placeholder="Enter your username..." />
@@ -23,19 +24,19 @@
                     <label class="visually-hidden" for="email">Email Address</label>
                     <input class="form-control" name="email" id="emailField" type="email" placeholder="Enter your email address..." />
                 </div>
-                <div class="emailFeedBackArea invalid-feedback" style="display:none">
-                </div>
+                <div class="emailFeedBackArea invalid-feedback" style="display:none"></div>
 
                 <div class="mb-4">
                     <label class="visually-hidden" for="password">Password</label>
                     <input class="form-control" name="password" id="passwordField" type="password" placeholder="Enter your password..." />
                 </div>
+                <div class="passwordFeedBackArea invalid-feedback" style="display:none"></div>
 
                 <button class="btn btn-secondary w-100 submit-btn" type="submit">Sign up</button>
             </form>
 
             <!-- Text -->
-            <p class="text-center text-body-secondary mb-0">Already have an account?  <a href="./login.html">Login</a>.</p>
+            <p class="text-center text-body-secondary mb-0">Already have an account? <a href="./login">Login</a>.</p>
         </div>
     </div>
 </div>
