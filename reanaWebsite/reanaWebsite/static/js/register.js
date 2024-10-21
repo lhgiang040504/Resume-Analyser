@@ -28,5 +28,42 @@ usernameField.addEventListener("keyup", (e) => {
             submitBtn.removeAttribute("disabled");
           }
         });
+    } else {
+        usernameField.classList.remove("is-invalid");
+        usernameField.classList.remove("is-valid");
+        feedBackArea.style.display = "none";
+    }
+  });
+
+// EMAIL
+const emailField = document.querySelector("#emailField"); // id
+const emailfeedBackArea = document.querySelector(".emailfeedBackArea"); // class
+emailField.addEventListener("keyup", (e) => {
+    const emailVal = e.target.value;
+  
+    // clear Previous Validation
+    emailField.classList.remove("is-invalid");
+    emailfeedBackArea.style.display = "none";
+  
+    if (emailVal.length > 0) {
+        fetch("/authentication/email_validation", {
+            body: JSON.stringify({ email: emailVal }),
+            method: "POST",
+        })
+        .then(res => res.json())
+        .then((data) => {     
+          if (data.email_error) {
+            emailField.classList.add("is-invalid");
+            emailfeedBackArea.style.display = "block";
+            emailfeedBackArea.innerHTML = `<p>${data.email_error}</p>`;
+            submitBtn.disabled = true;
+          } else {
+            emailField.classList.add("is-valid");
+            submitBtn.removeAttribute("disabled");
+          }
+        });
+    } else {
+        emailField.classList.remove("is-invalid");
+        emailfeedBackArea.style.display = "none";
     }
   });
