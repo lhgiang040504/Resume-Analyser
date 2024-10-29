@@ -49,15 +49,24 @@ class LoginView(View):
             if user:
                 if user.is_active:
                     auth.login(request, user)
-                    return redirect('index')
+                    return redirect('news')
+            
             return render(request, 'authentication/login.html', {
                 'username': username,
-                'password': 'Invalid username or password'
+                'password': 'Invalid credentials, try again'
             })
+        
+        messages.error(request, 'Please fill all fields')
         return render(request, 'authentication/login.html', {
             'username': username if username else 'Please fill all fields',
             'password': 'Please fill all fields'
         })
+    
+class LogoutView(View):
+    def post(self, request):
+        auth.logout(request)
+        messages.success(request, 'You have been logged out')
+        return redirect('login')
     
 class UsernameValidationView(View):
     def post(self, request):

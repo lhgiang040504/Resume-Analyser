@@ -2,5 +2,31 @@
 {% load static %}
 
 {% block content %}
+<!-- Main -->
+<main class="main px-lg-6">
+  <!-- Content -->
+  <div class="container-lg">
+    <!-- Page content -->
+    <div class="row align-items-center">
+      <div class="col-12 col-md-auto order-md-1 d-flex align-items-center justify-content-center mb-4 mb-md-0">
+        <div class="avatar text-info me-2">
+          <i class="fs-4" data-duoicon="world"></i>
+        </div>
+        LOCATION –&nbsp;<time datetime="">TIME</time>
+      </div>
+      <div class="col-12 col-md order-md-0 text-center text-md-start">
+        <h1>Hello, {{username}}</h1>
+        <p class="fs-lg text-body-secondary mb-0">IT-Market today.</p>
+      </div>
+    </div>
 
+    <!-- Divider -->
+    <hr class="my-8" />
+
+    <form action="{% url 'news' %}" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <p>{{ form.file }}</p>
+      <p><input type="submit" value="Upload"></p>
+    </form>
+</main>
 {% endblock %}
