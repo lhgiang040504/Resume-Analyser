@@ -3,7 +3,7 @@ import re
 import io
 import spacy
 import docx2txt
-from . import constants as cs
+import constants as cs
 
 from pdfminer.converter import TextConverter
 from pdfminer.pdfinterp import PDFPageInterpreter, PDFResourceManager
@@ -24,6 +24,7 @@ nltk.download('stopwords')
 nltk.download('punkt')
 nltk.download('wordnet')
 nltk.download('averaged_perceptron_tagger')
+
 
 # Handle input file
 def extract_text_from_pdf(pdf_path):
@@ -75,6 +76,8 @@ def extract_text_from_pdf(pdf_path):
                 fake_file_handle.close()
         except PDFSyntaxError:
             return
+
+
 def extract_text_from_docx(doc_path):
     '''
     Helper function to extract plain text from .docx files
@@ -88,6 +91,8 @@ def extract_text_from_docx(doc_path):
         return ' '.join(text)
     except KeyError:
         return ' '
+
+
 def extract_text(file_path):
     '''
     Wrapper function to detect the file extension and call text
@@ -104,6 +109,37 @@ def extract_text(file_path):
     elif extension == 'docx':
         text = extract_text_from_docx(file_path)
     return text
+
+
+def get_number_of_pages(file_name):
+    try:
+        if isinstance(file_name, io.BytesIO):
+            # for remote pdf file
+            count = 0
+            for page in PDFPage.get_pages(
+                        file_name,
+                        caching=True,
+                        check_extractable=True
+            ):
+                count += 1
+            return count
+        else:
+            # for local pdf file
+            if file_name.endswith('.pdf'):
+                count = 0
+                with open(file_name, 'rb') as fh:
+                    for page in PDFPage.get_pages(
+                            fh,
+                            caching=True,
+                            check_extractable=True
+                    ):
+                        count += 1
+                return count
+            else:
+                return None
+    except PDFSyntaxError:
+        return None
+
 
 # Handle raw text data
 def extract_entity_sections_grad(text):
@@ -132,6 +168,8 @@ def extract_entity_sections_grad(text):
         elif key and phrase.strip():
             entities[key].append(phrase)
     return entities
+
+
 def extract_entity_sections_grad_(text):
     nlp = spacy.load('en_core_web_sm')
     doc = nlp(text)
@@ -143,7 +181,27 @@ def extract_entity_sections_grad_(text):
         else:
             entities[ent.label_].append(ent.text)
     return entities
+
+
+def extract_entities_wih_custom_model(custom_nlp_text):
+    '''
+    Helper function to extract different entities with custom
+    trained model using SpaCy's NER
+
+    :param custom_nlp_text: object of `spacy.tokens.doc.Doc`
+    :return: dictionary of entities
+    '''
+    entities = {}
+    for ent in custom_nlp_text.ents:
+        if ent.label_ not in entities.keys():
+            entities[ent.label_] = [ent.text]
+        else:
+            entities[ent.label_].append(ent.text)
+    for key in entities.keys():
+        entities[key] = list(set(entities[key]))
+    return entities
     
+
 # Parsing data
 def get_total_experience(experience_list):
     '''
@@ -162,6 +220,8 @@ def get_total_experience(experience_list):
     )
     total_experience_in_months = total_exp
     return total_experience_in_months
+
+
 def extract_experience(resume_text):
     '''
     Helper function to extract experience from resume text
@@ -208,6 +268,8 @@ def extract_experience(resume_text):
         if x and 'experience' in x.lower()
     ]
     return x
+
+
 def get_number_of_months_from_dates(date1, date2):
     '''
     Helper function to extract total months of experience from a resume
@@ -237,6 +299,7 @@ def get_number_of_months_from_dates(date1, date2):
         return 0
     return months_of_experience
 
+
 def extract_entity_sections_professional(text):
     '''
     Helper function to extract all the raw text from sections of
@@ -263,6 +326,8 @@ def extract_entity_sections_professional(text):
         elif key and phrase.strip():
             entities[key].append(phrase)
     return entities
+
+
 def extract_email(text):
     '''
     Helper function to extract email id from text
