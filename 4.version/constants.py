@@ -1,7 +1,10 @@
 from nltk.corpus import stopwords
 
-# Omkar Pathak
-NAME_PATTERN = [{'POS': 'PROPN'}, {'POS': 'PROPN'}]
+# Name pattern
+NAME_PATTERN = [{'POS': 'PROPN'}]
+# Link pattern
+LINK_PATTERN = r'\b(?:[A-Za-z][A-Za-z0-9+.-]*://)?[A-Za-z0-9.-]+\.[a-zA-Z]{2,}(?:/[A-Za-z0-9&%_\-.?=]*)*\b'
+
 
 # Education (Upper Case Mandatory)
 EDUCATION = [
