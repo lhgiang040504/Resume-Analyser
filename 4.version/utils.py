@@ -391,21 +391,17 @@ def extract_name(doc, matcher):
 
 def extract_mobile_number(text):
     '''
-    Helper function to extract mobile number from text
+    Helper function to extract mobile number from text.
 
-    :param text: plain text extracted from resume file
-    :return: string of extracted mobile numbers
+    :param text: plain text extracted from a resume file
+    :return: list of extracted mobile numbers
     '''
-    # Regular expression to match phone numbers (supports various formats)
-    phone_pattern = r'(\+?\d{1,3}[-.\s]?)?(\(?\d{1,4}\)?[-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,4})'
+    # Enhanced regex to match international formats and balanced parentheses
+    mob_num_regex = r'''(\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{3}\)
+                        [-\.\s]*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})'''
+    phone = re.findall(re.compile(mob_num_regex), text)
 
-    # Find all matches in the text
-    phone_numbers = re.findall(phone_pattern, text)
-
-    # Clean up the result to return full phone numbers (combining the matched parts)
-    full_phone_numbers = [''.join(number) for number in phone_numbers]
-
-    return full_phone_numbers
+    return phone
 
 
 def extract_skills(nlp_text, noun_chunks, skills_file=None):
