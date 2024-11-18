@@ -331,7 +331,7 @@ def extract_link(text):
     :param text: plain text extracted from resume file
     '''
     # Regular expression to match domain names with optional protocols and paths
-    domain_with_path_pattern = cs.Link_PATTERN
+    domain_with_path_pattern = cs.LINK_PATTERN
     # Extract all the links (with or without protocol)
     links = re.findall(domain_with_path_pattern, text)
 
