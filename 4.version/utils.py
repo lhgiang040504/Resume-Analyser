@@ -18,12 +18,8 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 
 import nltk
-nltk.download('maxent_ne_chunker')
-nltk.download('words')
-nltk.download('stopwords')
-nltk.download('punkt')
-nltk.download('wordnet')
-nltk.download('averaged_perceptron_tagger')
+from collections import defaultdict
+from urllib.parse import urlparse
 
 
 # Handle input file
@@ -328,21 +324,37 @@ def extract_entity_sections_professional(text):
     return entities
 
 
-def extract_email(text):
+def extract_link(text):
     '''
-    Helper function to extract email id from text
+    Helper function to extract link id from text
 
     :param text: plain text extracted from resume file
     '''
-    email = re.findall(r"([^@|\s]+@[^@]+\.[^@|\s]+)", text)
-    if email:
-        try:
-            return email[0].split()[0].strip(';')
-        except IndexError:
-            return None
+    # Regular expression to match domain names with optional protocols and paths
+    domain_with_path_pattern = cs.Link_PATTERN
+    # Extract all the links (with or without protocol)
+    links = re.findall(domain_with_path_pattern, text)
+
+    # Dictionary to hold domain as key and list of links as value
+    domain_dict = defaultdict(list)
+
+    # Iterate through each link
+    for link in links:
+        # If the link doesn't have a protocol, add https:// by default
+        if not re.match(r'^[a-zA-Z][a-zA-Z0-9+.-]*://', link):  # No protocol
+            link = 'https://' + link
+
+        # Parse the link to get the domain name (without protocol)
+        parsed_url = urlparse(link)
+        domain_name = parsed_url.netloc
+
+        # Append the link to the list of the corresponding domain
+        domain_dict[domain_name].append(link)
+
+    return domain_dict
 
 
-def extract_name(nlp_text, matcher):
+def extract_name(doc, matcher):
     '''
     Helper function to extract name from spacy nlp text
 
@@ -350,44 +362,50 @@ def extract_name(nlp_text, matcher):
     :param matcher: object of `spacy.matcher.Matcher`
     :return: string of full name
     '''
-    pattern = [cs.NAME_PATTERN]
+    # Add a pattern to match proper nouns (PROPN)
+    pattern = cs.NAME_PATTERN
+    matcher.add('NAME', None, pattern)
 
-    matcher.add('NAME', None, *pattern)
+    # Apply the matcher to the doc
+    matches = matcher(doc)
+    
+    # List to store full names
+    full_names = []
+    
+    # Temporary variable to track the end position of the last matched name
+    last_end_index = -1
+    
+    # Iterate over the matches
+    for match_id, start, end in matches:
+        # If the current match is contiguous with the last match, append the name
+        if start == last_end_index:
+            full_names[-1] += " " + doc[start:end].text  # Merge the names
+        else:
+            full_names.append(doc[start:end].text)  # Add a new name
+        
+        # Update the last_end_index to the end of the current match
+        last_end_index = end
+    
+    return full_names
 
-    matches = matcher(nlp_text)
 
-    for _, start, end in matches:
-        span = nlp_text[start:end]
-        if 'name' not in span.text.lower():
-            return span.text
-
-
-def extract_mobile_number(text, custom_regex=None):
+def extract_mobile_number(text):
     '''
     Helper function to extract mobile number from text
 
     :param text: plain text extracted from resume file
     :return: string of extracted mobile numbers
     '''
-    # Found this complicated regex on :
-    # https://zapier.com/blog/extract-links-email-phone-regex/
-    # mob_num_regex = r'''(?:(?:\+?([1-9]|[0-9][0-9]|
-    #     [0-9][0-9][0-9])\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|
-    #     [2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([0-9][1-9]|
-    #     [0-9]1[02-9]|[2-9][02-8]1|
-    #     [2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|
-    #     [2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{7})
-    #     (?:\s*(?:#|x\.?|ext\.?|
-    #     extension)\s*(\d+))?'''
-    if not custom_regex:
-        mob_num_regex = r'''(\d{3}[-\.\s]??\d{3}[-\.\s]??\d{4}|\(\d{3}\)
-                        [-\.\s]*\d{3}[-\.\s]??\d{4}|\d{3}[-\.\s]??\d{4})'''
-        phone = re.findall(re.compile(mob_num_regex), text)
-    else:
-        phone = re.findall(re.compile(custom_regex), text)
-    if phone:
-        number = ''.join(phone[0])
-        return number
+    # Regular expression to match phone numbers (supports various formats)
+    phone_pattern = r'(\+?\d{1,3}[-.\s]?)?(\(?\d{1,4}\)?[-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,4})'
+
+    # Find all matches in the text
+    phone_numbers = re.findall(phone_pattern, text)
+
+    # Clean up the result to return full phone numbers (combining the matched parts)
+    full_phone_numbers = [''.join(number) for number in phone_numbers]
+
+    return full_phone_numbers
 
 
 def extract_skills(nlp_text, noun_chunks, skills_file=None):
