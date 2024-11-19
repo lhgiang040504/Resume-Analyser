@@ -1,4 +1,4 @@
-spacy==3.7.5
+spacy==3.6.5
 transformers==4.46.2
 nltk==3.9.1
 docx2txt
