@@ -2,16 +2,21 @@ from nltk.corpus import stopwords
 
 # Name pattern
 NAME_PATTERN = [{'POS': 'PROPN'}]
+
 # Link pattern
 LINK_PATTERN = r'\b(?:[A-Za-z][A-Za-z0-9+.-]*://)?[A-Za-z0-9.-]+\.[a-zA-Z]{2,}(?:/[A-Za-z0-9&%_\-.?=]*)*\b'
-
 
 # Education (Upper Case Mandatory)
 EDUCATION = [
             'BE', 'B.E.', 'B.E', 'BS', 'B.S', 'ME', 'M.E',
             'M.E.', 'MS', 'M.S', 'BTECH', 'MTECH',
-            'SSC', 'HSC', 'CBSE', 'ICSE', 'X', 'XII'
+            'SSC', 'HSC', 'CBSE', 'ICSE', 'X', 'XII',
+            "BACHELOR", "MASTERS", "PHD", "MBA", "BSC", "MSC",
         ]
+
+# Year regex
+YEAR = r'\b(19|20)\d{2}\b'
+STOPWORDS = set(stopwords.words('english'))
 
 NOT_ALPHA_NUMERIC = r'[^a-zA-Z\d]'
 
@@ -23,7 +28,7 @@ MONTHS_SHORT = r'''(jan)|(feb)|(mar)|(apr)|(may)|(jun)|(jul)
 MONTHS_LONG = r'''(january)|(february)|(march)|(april)|(may)|(june)|(july)|
                    (august)|(september)|(october)|(november)|(december)'''
 MONTH = r'(' + MONTHS_SHORT + r'|' + MONTHS_LONG + r')'
-YEAR = r'(((20|19)(\d{2})))'
+
 
 STOPWORDS = set(stopwords.words('english'))
 
