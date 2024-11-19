@@ -388,6 +388,34 @@ def extract_name(doc, matcher):
     
     return full_names
 
+def extract_link(text):
+    '''
+    Helper function to extract link id from text
+
+    :param text: plain text extracted from resume file
+    '''
+    # Regular expression to match domain names with optional protocols and paths
+    domain_with_path_pattern = cs.LINK_PATTERN
+    # Extract all the links (with or without protocol)
+    links = re.findall(domain_with_path_pattern, text)
+
+    # Dictionary to hold domain as key and list of links as value
+    domain_dict = defaultdict(list)
+
+    # Iterate through each link
+    for link in links:
+        # If the link doesn't have a protocol, add https:// by default
+        if not re.match(r'^[a-zA-Z][a-zA-Z0-9+.-]*://', link):  # No protocol
+            link = 'https://' + link
+
+        # Parse the link to get the domain name (without protocol)
+        parsed_url = urlparse(link)
+        domain_name = parsed_url.netloc
+
+        # Append the link to the list of the corresponding domain
+        domain_dict[domain_name].append(link)
+
+    return domain_dict
 
 def extract_mobile_number(text):
     '''
@@ -403,6 +431,35 @@ def extract_mobile_number(text):
 
     return phone
 
+def extract_education(nlp_text):
+    '''
+    Helper function to extract education from spacy nlp text
+
+    :param nlp_text: object of `spacy.tokens.doc.Doc`
+    :return: tuple of education degree and year if year if found
+             else only returns education degree
+    '''
+    edu = {}
+    # Extract education degree
+    try:
+        for index, token in enumerate(nlp_text):
+            text_cleaned = re.sub(r'[?|$|.|!|,]', r'', token.text)
+            if text_cleaned.upper() in cs.EDUCATION and text_cleaned.upper() not in cs.STOPWORDS:
+                # Collect surrounding context (current and next 5 tokens for simplicity)
+                context = " ".join([t.text for t in nlp_text[index:index + 6]])
+                edu[text_cleaned.upper()] = context
+    except IndexError:
+        pass
+
+    # Extract year
+    education = []
+    for key in edu.keys():
+        year = re.search(re.compile(cs.YEAR), edu[key])
+        if year:
+            education.append((key, ''.join(year.group(0))))
+        else:
+            education.append(key)
+    return education
 
 def extract_skills(nlp_text, noun_chunks, skills_file=None):
     '''
@@ -433,38 +490,7 @@ def extract_skills(nlp_text, noun_chunks, skills_file=None):
             skillset.append(token)
     return [i.capitalize() for i in set([i.lower() for i in skillset])]
 
-
 def cleanup(token, lower=True):
     if lower:
         token = token.lower()
     return token.strip()
-
-
-def extract_education(nlp_text):
-    '''
-    Helper function to extract education from spacy nlp text
-
-    :param nlp_text: object of `spacy.tokens.doc.Doc`
-    :return: tuple of education degree and year if year if found
-             else only returns education degree
-    '''
-    edu = {}
-    # Extract education degree
-    try:
-        for index, text in enumerate(nlp_text):
-            for tex in text.split():
-                tex = re.sub(r'[?|$|.|!|,]', r'', tex)
-                if tex.upper() in cs.EDUCATION and tex not in cs.STOPWORDS:
-                    edu[tex] = text + nlp_text[index + 1]
-    except IndexError:
-        pass
-
-    # Extract year
-    education = []
-    for key in edu.keys():
-        year = re.search(re.compile(cs.YEAR), edu[key])
-        if year:
-            education.append((key, ''.join(year.group(0))))
-        else:
-            education.append(key)
-    return education
