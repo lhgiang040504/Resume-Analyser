@@ -18,6 +18,20 @@ EDUCATION = [
 YEAR = r'\b(19|20)\d{2}\b'
 STOPWORDS = set(stopwords.words('english'))
 
+RESUME_SECTIONS_PROFESSIONAL = [
+                    'experience',
+                    'education',
+                    'interests',
+                    'professional experience',
+                    'publications',
+                    'skills',
+                    'certifications',
+                    'objective',
+                    'career objective',
+                    'summary',
+                    'leadership'
+                ]
+
 NOT_ALPHA_NUMERIC = r'[^a-zA-Z\d]'
 
 NUMBER = r'\d+'
@@ -32,19 +46,7 @@ MONTH = r'(' + MONTHS_SHORT + r'|' + MONTHS_LONG + r')'
 
 STOPWORDS = set(stopwords.words('english'))
 
-RESUME_SECTIONS_PROFESSIONAL = [
-                    'experience',
-                    'education',
-                    'interests',
-                    'professional experience',
-                    'publications',
-                    'skills',
-                    'certifications',
-                    'objective',
-                    'career objective',
-                    'summary',
-                    'leadership'
-                ]
+
 
 RESUME_SECTIONS_GRAD = [
                     'accomplishments',
