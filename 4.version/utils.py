@@ -136,8 +136,6 @@ def get_number_of_pages(file_name):
     except PDFSyntaxError:
         return None
 
-
-# Handle raw text data
 def extract_entity_sections_grad(text):
     '''
     Helper function to extract all the raw text from sections of resume
@@ -164,8 +162,6 @@ def extract_entity_sections_grad(text):
         elif key and phrase.strip():
             entities[key].append(phrase)
     return entities
-
-
 def extract_entity_sections_grad_(text):
     nlp = spacy.load('en_core_web_sm')
     doc = nlp(text)
@@ -177,8 +173,6 @@ def extract_entity_sections_grad_(text):
         else:
             entities[ent.label_].append(ent.text)
     return entities
-
-
 def extract_entities_wih_custom_model(custom_nlp_text):
     '''
     Helper function to extract different entities with custom
@@ -197,8 +191,6 @@ def extract_entities_wih_custom_model(custom_nlp_text):
         entities[key] = list(set(entities[key]))
     return entities
     
-
-# Parsing data
 def get_total_experience(experience_list):
     '''
     Wrapper function to extract total months of experience from a resume
@@ -295,7 +287,6 @@ def get_number_of_months_from_dates(date1, date2):
         return 0
     return months_of_experience
 
-
 def extract_entity_sections_professional(text):
     '''
     Helper function to extract all the raw text from sections of
@@ -322,7 +313,6 @@ def extract_entity_sections_professional(text):
         elif key and phrase.strip():
             entities[key].append(phrase)
     return entities
-
 
 def extract_link(text):
     '''
@@ -352,7 +342,6 @@ def extract_link(text):
         domain_dict[domain_name].append(link)
 
     return domain_dict
-
 
 def extract_name(doc, matcher):
     '''
@@ -387,35 +376,6 @@ def extract_name(doc, matcher):
         last_end_index = end
     
     return full_names
-
-def extract_link(text):
-    '''
-    Helper function to extract link id from text
-
-    :param text: plain text extracted from resume file
-    '''
-    # Regular expression to match domain names with optional protocols and paths
-    domain_with_path_pattern = cs.LINK_PATTERN
-    # Extract all the links (with or without protocol)
-    links = re.findall(domain_with_path_pattern, text)
-
-    # Dictionary to hold domain as key and list of links as value
-    domain_dict = defaultdict(list)
-
-    # Iterate through each link
-    for link in links:
-        # If the link doesn't have a protocol, add https:// by default
-        if not re.match(r'^[a-zA-Z][a-zA-Z0-9+.-]*://', link):  # No protocol
-            link = 'https://' + link
-
-        # Parse the link to get the domain name (without protocol)
-        parsed_url = urlparse(link)
-        domain_name = parsed_url.netloc
-
-        # Append the link to the list of the corresponding domain
-        domain_dict[domain_name].append(link)
-
-    return domain_dict
 
 def extract_mobile_number(text):
     '''
